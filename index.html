@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tấm Thiệp Biến Mất, Thư Hiện Ra</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. Thiết lập Chung & Căn Giữa */
+        html, body {
+            height: 100%; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background-color: #fce4ec; /* Hồng phấn nền */
+            font-family: 'Quicksand', sans-serif; 
+            overflow: hidden; 
+        }
+
+        /* Biến CSS */
+        :root {
+            --pink-color: #f8bbd0;
+            --gold-color: #FFD700;
+            --text-color: #880e4f;
+            --paper-color: #fffaf0;
+        }
+
+        /* 2. Style cho Tấm Thiệp Đóng (Phong Bì) */
+        #theCard {
+            position: absolute; /* Quan trọng để nội dung mới hiện ra thay thế */
+            width: 320px;
+            height: 200px;
+            background-color: var(--pink-color);
+            border-radius: 10px;
+            /* Tạo viền và bóng đổ giống phong bì tinh tế */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border: 3px solid var(--gold-color);
+            cursor: pointer;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            color: var(--text-color);
+            font-weight: 700;
+            font-size: 1.5em;
+            text-align: center;
+            /* Hiệu ứng biến mất nhanh */
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out; 
+            z-index: 2; 
+        }
+
+        /* Hiệu ứng khi di chuột */
+        #theCard:hover {
+            transform: scale(1.05);
+        }
+
+        /* 3. Style cho Bức Thư (Nội dung sau khi mở) */
+        #contentAfterOpen {
+            display: none; /* Ban đầu ẩn */
+            position: absolute; /* Đảm bảo nó hiện ra giữa */
+            width: 550px; 
+            min-height: 400px; 
+            padding: 40px;
+            background-color: var(--paper-color); /* Giấy ngả vàng */
+            border-radius: 15px; 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            box-sizing: border-box; 
+            line-height: 1.6;
+            
+            /* Hiệu ứng xuất hiện */
+            opacity: 0; 
+            transform: scale(0.7); 
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out; 
+            z-index: 1;
+        }
+
+        /* Khi bức thư hiện ra */
+        #contentAfterOpen.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* 4. Style các thành phần nội dung */
+        #contentAfterOpen img {
+            max-width: 90%; 
+            max-height: 200px; 
+            border: 3px solid var(--pink-color); 
+            border-radius: 8px; 
+            margin-bottom: 25px;
+        }
+
+        #wishMessage {
+            font-family: 'Pacifico', cursive; 
+            font-size: 1.3em; 
+            color: var(--text-color); 
+            line-height: 1.7;
+        }
+
+        .sender {
+            font-style: italic;
+            font-size: 0.9em;
+            margin-top: 20px;
+            color: #a0a0a0;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="theCard">
+        <p style="margin: 0; font-family: 'Pacifico', cursive;">hmmmmmm</p>
+        <small style="margin-top: 5px; font-size: 0.7em;">💌</small>
+    </div>
+
+    <div id="contentAfterOpen">
+        <p style="font-size: 1.6em; font-weight: 700; color: var(--text-color); margin-bottom: 20px;">Dear người đẹp !!!</p>
+        
+        <img 
+            src="0013.gif" 
+            alt="Chúc mừng bạn!" 
+        >
+        
+        <p id="wishMessage">
+           Ngủ ngon nhó,<br> ngủ sớm nữa thức khuya dữ luôn á.
+        </p>
+        
+        <p class="sender">lớp du sô mếch lun á from người tồi</p>
+    </div>
+
+    <script>
+        const theCard = document.getElementById('theCard');
+        const contentAfterOpen = document.getElementById('contentAfterOpen');
+
+        theCard.addEventListener('click', () => {
+            // 1. Kích hoạt hiệu ứng biến mất (Fade out & Scale down)
+            theCard.style.opacity = '0';
+            theCard.style.transform = 'scale(0.5)'; 
+
+            // 2. Đợi hiệu ứng biến mất xong (0.4s)
+            setTimeout(() => {
+                theCard.style.display = 'none'; // Ẩn hoàn toàn thiệp
+
+                // 3. Hiện bức thư
+                contentAfterOpen.style.display = 'block'; 
+                
+                // 4. Kích hoạt hiệu ứng xuất hiện (Fade in & Scale up)
+                setTimeout(() => {
+                    contentAfterOpen.classList.add('show');
+                }, 50); // Khoảng trễ nhỏ để CSS transition hoạt động
+            }, 400); // Thời gian này phải khớp với transition của theCard (0.4s)
+        });
+    </script>
+</body>
+</html>
